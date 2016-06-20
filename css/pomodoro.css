@@ -1,0 +1,48 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  text-align: center;
+  font-family: 'Bree Serif', serif;
+  background-color: #CCCCCC;
+}
+header {
+  background-color: #204056;
+  padding: 15px;
+  color: #31A496;
+  text-shadow: 1px 1px #000000;
+}
+.clockBox {
+  height: 500px;
+  width: 500px;
+  background-color: #204056;
+  margin: 100px auto;
+  border-radius: 15px;
+}
+.timerOption {
+  position: relative;
+  display: inline-block;
+  width: 150px;
+  height: 50px;
+  line-height: 50px;
+  top: 15px;
+  background-color: #31A496;
+  border-radius: 5px;
+}
+.displayBox {
+  width: 50px;
+}
+.clockFace {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  line-height: 300px;
+  color: #ffffff;
+  text-shadow: 1px 1px #000000;
+  border-radius: 100%;
+  background-color: #31A496;
+  top: 10%;
+  transform: translateY(-50%);
+  left: 50%;
+  transform: translateX(-50%);
+}
