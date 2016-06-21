@@ -11,18 +11,21 @@
         </header>
         <div class="clockBox" id="clockContain">
             <div class="timerOption" id="breakSet">
-                <input type="button" class="button" value="-"/>
-                <input type="textbox" class="diplayBox" size="4"/>
-                <input type="button" class="button" value="+"/>
+                <input type="button" class="button" id="breakMinus" value="-"/>
+                <input type="textbox" class="displayBox" id="breakBox" size="1" value=""/>
+                <input type="button" class="button" id="breakPlus" value="+"/>
             </div>
             <div class="timerOption" id="workSet">
-                <input type="button" class="button" value="-"/>
-                <input type="textbox" class="diplayBox" size="4"/>
-                <input type="button" class="button" value="+"/>
+                <input type="button" class="button" id="timerMinus" value="-"/>
+                <input type="textbox" class="displayBox" id="timeBox" size="1" value=""/>
+                <input type="button" class="button" id="timerPlus" value="+"/>
             </div>
-            <div class="clockFace" id="clockDisplay">
-                <p>Test text</p>
+            <div class="clockFace" id="clockFace">
+              <div class="clockOption" id="infoBox"></div>
+              <div class="clockOption" id="clockDisplay"></div>
+              <div class="clockOption" id="pause-reset"></div>
             </div>
         </div>
+        <script src="js/pomodoro.js"></script>
     </body>
 </html>
