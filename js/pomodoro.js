@@ -1,104 +1,144 @@
 var setBreak = 5;
 var setTimer = 25;
-var timer;
-var breakTimer;
-var displayMin;
-var displaySec;
-var displayBrkMin;
-var displayBrkSec;
+var min = setTimer - 1;
+//console.log(min);
+var timer = setTimer * 60;
+var sec = timer % 60;
+//console.log(sec);
+var brkMin = setBreak - 1;
+//console.log(brkMin);
+var breakTimer = setBreak * 60;
+var brkSec = breakTimer % 60;
+//console.log(brkSec);
 var myClock;
 var myBreak;
 var paused = false;
+var started = false;
 var pauseSec = null;
 var pauseMin = null;
+var onBreak = false;
+var splash = document.getElementById('splash');
+var breakMinus = document.getElementById('breakMinus');
+var breakPlus = document.getElementById('breakPlus');
+var timerMinus = document.getElementById('timerMinus');
+var timerPlus = document.getElementById('timerPlus');
 var clockDisplay = document.getElementById('clockDisplay');
 var breakBox = document.getElementById('breakBox');
 var timeBox = document.getElementById('timeBox');
 var infoBox = document.getElementById('infoBox');
 var clockFace = document.getElementById('clockFace');
+var startReset = document.getElementById('startReset');
+var pauseResume = document.getElementById('pauseResume');
+clockDisplay.innerHTML = setTimer + ":00";
 
-breakBox.value = setBreak;
-timeBox.value = setTimer;
 
-var breakMinus = document.getElementById('breakMinus');
 breakMinus.addEventListener('click', function() {
-    if (setBreak === 1) {
-        displayBrkMin = 0;
-        clearInterval(myBreak);
-        breakTimer = setBreak * 60;
-        console.log(displayBrkMin);
-        breakBox.value = setBreak;
-    } else if (displayBrkMin === 0) {} else {
+    if (setBreak === 1) {} else {
         setBreak--;
-        clearInterval(myBreak);
-        breakTimer = setBreak * 60;
-        displayBrkMin = Math.floor(breakTimer / 60);
-        displayBrkMin--;
-        console.log(displayBrkMin);
+        brkMin = setBreak - 1;
+        brkSec = breakTimer * 60;
+        //console.log(setBreak);
         breakBox.value = setBreak;
     }
 });
-var breakPlus = document.getElementById('breakPlus');
 breakPlus.addEventListener('click', function() {
     if (setBreak === 30) {} else {
         setBreak++;
-        clearInterval(myBreak);
-        breakTimer = setBreak * 60;
-        displayBrkMin = Math.floor(breakTimer / 60);
-        displayBrkMin--;
-        console.log(displayBrkMin);
+        brkMin = setBreak - 1;
+        brkSec = breakTimer * 60;
+        //console.log(setBreak);
         breakBox.value = setBreak;
     }
 });
-var timerMinus = document.getElementById('timerMinus');
 timerMinus.addEventListener('click', function() {
     if (setTimer === 1) {
-        displayMin = 0;
-        clearInterval(myClock);
-        timer = setTimer * 60;
+        min = setTimer - 1;
+        sec = setTimer * 60;
+        //console.log(setTimer);
         timeBox.value = setTimer;
-        startTimer();
-    } else {
+        clockDisplay.innerHTML = setTimer + ":00";
+    } else if (setTimer == 0) {} else {
         setTimer--;
-        clearInterval(myClock);
-        timer = setTimer * 60;
-        displayMin = Math.floor(timer / 60);
-        displayMin--;
+        min = setTimer - 1;
+        sec = setTimer * 60;
+        //console.log(setTimer);
         timeBox.value = setTimer;
-        startTimer();
+        clockDisplay.innerHTML = setTimer + ":00";
     }
 });
-var timerPlus = document.getElementById('timerPlus');
 timerPlus.addEventListener('click', function() {
     if (setTimer === 59) {} else {
         setTimer++;
-        clearInterval(myClock);
-        timer = setTimer * 60;
-        displayMin = Math.floor(timer / 60);
-        displayMin--;
+        min = setTimer - 1;
+        sec = setTimer * 60;
+        //console.log(setTimer);
         timeBox.value = setTimer;
+        clockDisplay.innerHTML = setTimer + ":00";
+    }
+});
+/*clockFace.addEventListener('click', function() {
+    if (pauseSec != null && paused == true) {
+        clearInterval(myClock);
+        timer = pauseSec;
+        displayMin = pauseMin;
+        pauseSec = null;
+        pauseMin = null;
+        paused = false;
         startTimer();
+    } else if (paused == false && started == false) {
+        //do nothing
+    } else if (started == true && canPause == false) {
+        console.log("not paused?");
+        clearInterval(myClock);
+        pauseMe();
+        paused = true;
+    }
+});*/
+startReset.addEventListener('click', function() {
+    if (started == false) {
+        started = true;
+        clearInterval(myClock);
+        startTimer();
+    } else if (started == true) {
+        started = false;
+        paused = false;
+        onBreak = false;
+        clearInterval(myClock);
+        clearInterval(myBreak);
+        min = setTimer - 1;
+        timer = setTimer * 60;
+        sec = timer % 60;
+        infoBox.innerHTML = "";
+        clockDisplay.innerHTML = setTimer + ":00";
     }
 });
 
-clockFace.addEventListener('click', function() {
-  if (pauseSec != null && paused == true) {
-    clearInterval(myClock);
-    timer = pauseSec;
-    displayMin = pauseMin;
-    pauseSec = null;
-    pauseMin = null;
-    paused = false;
-    startTimer();
-  } else if (paused == false) {
-    console.log("not paused?");
-    clearInterval(myClock);
-    pauseMe();
-    paused = true;
-  }
+pauseResume.addEventListener('click', function() {
+    if (started == true && paused == false && onBreak == false) {
+        clearInterval(myClock);
+        paused = true;
+        pauseMe(min, sec);
+    } else if (started == true && paused == false && onBreak == true) {
+        clearInterval(myBreak);
+        paused = true;
+        pauseMe(brkMin, brkSec);
+    } else if (paused == true && onBreak == false) {
+        console.log("1 is true");
+        min = pauseMin;
+        sec = pauseSec;
+        paused = false;
+        startTimer();
+    } else if (paused == true && onBreak == true) {
+        console.log("2 is true");
+        brkMin = pauseMin;
+        brkSec = pauseSec;
+        paused = false;
+        startBreak();
+    }
 });
 
 function startTimer() {
+    onBreak = false;
     clearInterval(myBreak);
     infoBox.innerHTML = "Countdown";
     myClock = setInterval(function() {
@@ -107,6 +147,7 @@ function startTimer() {
 }
 
 function startBreak() {
+    onBreak = true;
     clearInterval(myClock);
     infoBox.innerHTML = "Break!";
     myBreak = setInterval(function() {
@@ -116,40 +157,61 @@ function startBreak() {
 
 function countDown() {
     timer--;
-    displaySec = timer % 60;
-    if (displayMin === 0 && displaySec === 0) {
+    sec = timer % 60;
+    if (min === 0 && sec === 0) {
+        min = setTimer -1;
         timer = setTimer * 60;
-        displayMin = Math.floor(timer / 60);
-        displayMin--;
+        sec = timer * 60;
+        splash.className = " alert";
+        clockDisplay.innerHTML = setTimer + ":00";
         startBreak();
-    } else if (displayMin === 0) {
-        clockDisplay.innerHTML = displaySec;
-    } else if (displaySec === 0) {
-        displayMin--;
+    } else if (min === 0) {
+        splash.className = "";
+        clockDisplay.innerHTML = sec.toString();
+    } else if (sec < 10) {
+        if (min == 0) {
+            clockDisplay.innerHTML = "0" + sec.toString();
+        } else if (sec === 0) {
+            clockDisplay.innerHTML = min.toString() + ":0" + sec.toString();
+            min--;
+        } else {
+            clockDisplay.innerHTML = min.toString() + ":0" + sec.toString();
+        }
+    } else {
+        clockDisplay.innerHTML = min.toString() + ":" + sec.toString();
     }
-    clockDisplay.innerHTML = displayMin + ":" + displaySec;
 }
 
 function countBreak() {
     breakTimer--;
-    displayBrkSec = breakTimer % 60;
-    if (displayBrkMin === 0 && displayBrkSec === 0) {
-        breakTimer = setBreak * 60;
-        displayBrkMin = Math.floor(breakTimer / 60);
-        displayBrkMin--;
+    brkSec = breakTimer % 60;
+    if (brkMin === 0 && brkSec === 0) {
+        brkMin = setBreak -1;
+        brkMin--;
+        splash.className = " alert";
+        clockDisplay.innerHTML = setBreak + ":00";
         startTimer();
-    } else if (displayBrkMin === 0) {
-        clockDisplay.innerHTML = displayBrkSec;
-    } else if (displayBrkSec === 0) {
-        displayBrkMin--;
+    } else if (brkMin === 0) {
+        splash.className = "";
+        clockDisplay.innerHTML = brkSec.toString();
+    } else if (brkSec < 10) {
+        if (brkMin == 0) {
+            clockDisplay.innerHTML = "0" + brkSec.toString();
+        } else if (brkSec === 0) {
+            clockDisplay.innerHTML = brkMin.toString() + ":0" + brkSec.toString();
+            brkMin--;
+        } else {
+            clockDisplay.innerHTML = brkMin.toString() + ":0" + brkSec.toString();
+        }
+    } else {
+        clockDisplay.innerHTML = brkMin.toString() + ":" + brkSec.toString();
     }
-    clockDisplay.innerHTML = displayBrkMin + ":" + displayBrkSec;
 }
 
-function pauseMe() {
-  pauseSec = displaySec;
-  console.log(pauseSec);
-  pauseMin = displayMin;
-  console.log(pauseMin);
-  clockDisplay.innerHTML = pauseMin + ":" + pauseSec;
+function pauseMe(min, sec) {
+    pauseSec = sec;
+    console.log(sec);
+    pauseMin = min;
+    console.log(min);
+    clockDisplay.innerHTML = pauseMin + ":" + pauseSec;
 }
